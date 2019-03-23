@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Blogs.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blogs.Controllers
@@ -11,7 +12,7 @@ namespace Blogs.Controllers
         public HomeController(IBloggingRepository repo) => repository = repo;
 
         public IActionResult Index() => View(repository.Blogs.OrderBy(b => b.Name));
-
+        [Authorize]
         public IActionResult AddBlog() => View();
 
         public IActionResult BlogDetail(int id) => View(new PostViewModel
