@@ -12,7 +12,7 @@ namespace Blogs.Controllers
         public HomeController(IBloggingRepository repo) => repository = repo;
 
         public IActionResult Index() => View(repository.Blogs.OrderBy(b => b.Name));
-        [Authorize]
+        [Authorize(Roles = "Moderate")]
         public IActionResult AddBlog() => View();
 
         public IActionResult BlogDetail(int id) => View(new PostViewModel
@@ -23,7 +23,7 @@ namespace Blogs.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Moderate")]
         public IActionResult AddBlog(Blog model)
         {
             if (ModelState.IsValid)
@@ -41,6 +41,7 @@ namespace Blogs.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Moderate")]
         public IActionResult DeleteBlog(int id)
         {
             repository.DeleteBlog(repository.Blogs.FirstOrDefault(b => b.BlogId == id));
